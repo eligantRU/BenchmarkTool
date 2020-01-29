@@ -5,12 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 class BenchmarkOption {
     private String url;
-    private Long num;
-    private Long concurrency;
-    private Long timeout;
+    private int num;
+    private int concurrency;
+    private int timeout;
 
     @Contract(pure = true)
-    BenchmarkOption(String url_, Long num_, Long concurrency_, Long timeout_) throws Exception {
+    BenchmarkOption(@NotNull String url_, Long num_, Long concurrency_, Long timeout_) throws Exception {
         if (url_.isEmpty())
         {
             throw new Exception("'url' should be non-empty");
@@ -29,24 +29,24 @@ class BenchmarkOption {
         }
 
         url = url_;
-        num = num_;
-        concurrency = concurrency_;
-        timeout = timeout_;
+        num = Math.toIntExact(num_);
+        concurrency = Math.toIntExact(concurrency_);
+        timeout = Math.toIntExact(timeout_);
     }
 
     String url() {
         return url;
     }
 
-    Long num() {
+    int num() {
         return num;
     }
 
-    Long concurrency() {
+    int concurrency() {
         return concurrency;
     }
 
-    Long timeout() {
+    int timeout() {
         return timeout;
     }
 }
