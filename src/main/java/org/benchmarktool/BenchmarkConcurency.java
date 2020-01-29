@@ -5,10 +5,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BenchmarkConcurency {
-    private final List<Long> timers = Collections.synchronizedList(new ArrayList<>());
-    private final AtomicInteger successes = new AtomicInteger();
-    private final AtomicInteger fails = new AtomicInteger();
-    private final AtomicLong totalBytesCount = new AtomicLong();
+    private List<Long> timers = Collections.synchronizedList(new ArrayList<>());
+    private AtomicInteger success = new AtomicInteger();
+    private AtomicInteger fails = new AtomicInteger();
+    private AtomicLong totalBytesCount = new AtomicLong();
 
     void addTimer(long time) {
         timers.add(time);
@@ -18,8 +18,8 @@ public class BenchmarkConcurency {
         fails.incrementAndGet();
     }
 
-    void incrementSuccesses() {
-        successes.incrementAndGet();
+    void incrementSuccess() {
+        success.incrementAndGet();
     }
 
     public int getFails() {
@@ -27,7 +27,7 @@ public class BenchmarkConcurency {
     }
 
     public int getSuccesses() {
-        return successes.get();
+        return success.get();
     }
 
     public long getTimersSum() {
