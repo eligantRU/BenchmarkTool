@@ -57,11 +57,12 @@ public class LoadGenerator {
                 System.out.println(String.format(" >> ThreadPull exception: '%s'", e.getMessage()));
             }
         }));
-        totalWatch.stop();
-        stats.setTotalTime(totalWatch.elapsed(TimeUnit.MILLISECONDS));
 
         pool.shutdown();
         pool.awaitTermination(option.timeout() * option.num() / option.concurrency(), TimeUnit.MILLISECONDS);
+
+        totalWatch.stop();
+        stats.setTotalTime(totalWatch.elapsed(TimeUnit.MILLISECONDS));
 
         return stats;
     }
