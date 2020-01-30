@@ -1,19 +1,20 @@
-package org.benchmarktool;
+package org.benchmarktool.httpgetter;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.client.config.RequestConfig;
+import org.benchmarktool.response.ResponseInfo;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.HttpResponse;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-class HttpGetter {
-    CloseableHttpClient httpClient;
+public class HttpGetter {
+    private CloseableHttpClient httpClient;
     private final String url;
 
-    HttpGetter(String url_, int timeout) {
+    public HttpGetter(String url_, int timeout) {
         url = url_;
 
         RequestConfig config = RequestConfig.custom()
@@ -25,7 +26,7 @@ class HttpGetter {
                 .build();
     }
 
-    ResponseInfo emit() throws IOException {
+    public ResponseInfo emit() throws IOException {
         HttpResponse response = httpClient.execute(new HttpGet(url));
         int statusCode = response.getStatusLine().getStatusCode();
         int bytesCount = Arrays.stream(response.getAllHeaders())

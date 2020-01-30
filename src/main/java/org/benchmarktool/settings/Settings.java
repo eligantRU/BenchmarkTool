@@ -1,14 +1,14 @@
-package org.benchmarktool;
+package org.benchmarktool.settings;
 
 import org.jetbrains.annotations.NotNull;
 
-class BenchmarkOption {
+public class Settings {
     private final String url;
     private final int num;
     private final int concurrency;
     private final int timeout;
 
-    BenchmarkOption(@NotNull String url_, Long num_, Long concurrency_, Long timeout_) throws Exception {
+    public Settings(@NotNull String url_, Long num_, Long concurrency_, Long timeout_) throws Exception {
         if (url_.isEmpty())
         {
             throw new Exception("'url' should be non-empty");
@@ -32,19 +32,19 @@ class BenchmarkOption {
         timeout = Math.toIntExact(timeout_);
     }
 
-    String url() {
+    public String url() {
         return url;
     }
 
-    int num() {
+    public int num() {
         return num;
     }
 
-    int concurrency() {
+    public int concurrency() {
         return concurrency;
     }
 
-    int timeout() {
+    public int timeout() {
         return timeout;
     }
 }

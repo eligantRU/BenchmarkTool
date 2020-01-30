@@ -1,38 +1,40 @@
-package org.benchmarktool;
+package org.benchmarktool.stats;
+
+import org.benchmarktool.settings.Settings;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.*;
 
-public class BenchmarkStats {
+public class Stats {
     private List<Long> timers = Collections.synchronizedList(new ArrayList<>());
     private AtomicInteger success = new AtomicInteger();
     private AtomicInteger fails = new AtomicInteger();
     private AtomicLong totalBytesCount = new AtomicLong();
-    private final BenchmarkOption option;
+    private final Settings settings;
     private long totalTime;
 
-    BenchmarkStats(BenchmarkOption option_) {
-        option = option_;
+    public Stats(Settings settings_) {
+        settings = settings_;
     }
 
-    void addTimer(long time) {
+    public void addTimer(long time) {
         timers.add(time);
     }
 
-    void incrementFails() {
+    public void incrementFails() {
         fails.incrementAndGet();
     }
 
-    void incrementSuccess() {
+    public void incrementSuccess() {
         success.incrementAndGet();
     }
 
-    void addBytes(long count) {
+    public void addBytes(long count) {
         totalBytesCount.addAndGet(count);
     }
 
-    void setTotalTime(long totalTime_) {
+    public void setTotalTime(long totalTime_) {
         totalTime = totalTime_;
     }
 
@@ -63,8 +65,8 @@ public class BenchmarkStats {
                 "90%%: %d%n" +
                 "95%%: %d%n" +
                 "99%%: %d%n" +
-                "100%%: %d%n", option.concurrency(), totalTime, option.num(), fails.get(), totalBytesCount.get(),
-                0.001 * timers.stream().mapToLong(Long::longValue).sum() / option.concurrency(), art,
+                "100%%: %d%n", settings.concurrency(), totalTime, settings.num(), fails.get(), totalBytesCount.get(),
+                0.001 * timers.stream().mapToLong(Long::longValue).sum() / settings.concurrency(), art,
                 getPercentileBy(50), getPercentileBy(80), getPercentileBy(90), getPercentileBy(95),
                 getPercentileBy(99), getPercentileBy(100));
     }

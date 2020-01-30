@@ -1,4 +1,4 @@
-package org.benchmarktool;
+package org.benchmarktool.loadgenerator;
 
 import com.google.common.base.Stopwatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -8,22 +8,26 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import java.io.IOException;
 
+import org.benchmarktool.httpgetter.HttpGetter;
+import org.benchmarktool.response.ResponseInfo;
+import org.benchmarktool.settings.Settings;
+import org.benchmarktool.stats.Stats;
 import org.jetbrains.annotations.NotNull;
 
 // --url="https://www.sketch.com/404error" --num=10 --concurrency=4 --timeout=1000
 // --url="http://ya.ru" --num=5 --concurrency=4 --timeout=2000
 
-class LoadMaker {
+public class LoadGenerator {
     private final ExecutorService pool;
-    private final BenchmarkOption option;
+    private final Settings option;
 
-    LoadMaker(@NotNull BenchmarkOption option_) {
+    public LoadGenerator(@NotNull Settings option_) {
         option = option_;
         pool = Executors.newFixedThreadPool(option.concurrency());
     }
 
-    BenchmarkStats launch() throws InterruptedException {
-        BenchmarkStats stats = new BenchmarkStats(option);
+    public Stats launch() throws InterruptedException {
+        Stats stats = new Stats(option);
 
         Stopwatch totalWatch = Stopwatch.createStarted();
         AtomicInteger index = new AtomicInteger();
@@ -50,7 +54,7 @@ class LoadMaker {
             } catch (IOException e) {
                 watch.stop();
                 stats.incrementFails();
-                System.out.println(String.format(" >> Exception: '%s'", e.getMessage()));
+                System.out.println(String.format(" >> ThreadPull exception: '%s'", e.getMessage()));
             }
         }));
         totalWatch.stop();

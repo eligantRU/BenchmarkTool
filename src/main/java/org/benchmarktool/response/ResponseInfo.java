@@ -1,19 +1,19 @@
-package org.benchmarktool;
+package org.benchmarktool.response;
 
-class ResponseInfo {
+public class ResponseInfo {
     private final int status;
     private final int bytesCount;
 
-    ResponseInfo(int status_, int bytesCount_) {
+    public ResponseInfo(int status_, int bytesCount_) {
         status = status_;
         bytesCount = bytesCount_;
     }
 
-    int status() {
+    public int status() {
         return status;
     }
 
-    int bytesCount() {
+    public int bytesCount() {
         return bytesCount;
     }
 }

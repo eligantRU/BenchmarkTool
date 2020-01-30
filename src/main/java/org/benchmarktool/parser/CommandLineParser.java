@@ -1,16 +1,17 @@
-package org.benchmarktool;
+package org.benchmarktool.parser;
 
+import org.benchmarktool.settings.Settings;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option;
 
-class CommandLineParser {
-    static BenchmarkOption parse(String[] args) throws Exception {
+public class CommandLineParser {
+    public static Settings parse(String[] args) throws Exception {
         final int defaultTimeout = 30000;
 
         CommandLine line = (new DefaultParser()).parse(createOptions(), args);
-        return new BenchmarkOption(
+        return new Settings(
                 (String) line.getParsedOptionValue("url"),
                 ((Long) line.getParsedOptionValue("num")),
                 ((Long) line.getParsedOptionValue("concurrency")),
