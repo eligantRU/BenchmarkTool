@@ -7,15 +7,15 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option;
 
 public class CommandLineParser {
-    public static Settings parse(String[] args) throws Exception {
-        final int defaultTimeout = 30000;
+    static final int DEFAULT_TIMEOUT = 30000;
 
+    public static Settings parse(String[] args) throws Exception {
         CommandLine line = (new DefaultParser()).parse(createOptions(), args);
         return new Settings(
                 (String) line.getParsedOptionValue("url"),
                 ((Long) line.getParsedOptionValue("num")),
                 ((Long) line.getParsedOptionValue("concurrency")),
-                line.hasOption("timeout") ? (Long) line.getParsedOptionValue("timeout") : defaultTimeout);
+                line.hasOption("timeout") ? (Long) line.getParsedOptionValue("timeout") : DEFAULT_TIMEOUT);
     }
 
     private static Options createOptions() {

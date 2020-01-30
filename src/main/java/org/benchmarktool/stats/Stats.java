@@ -38,6 +38,28 @@ public class Stats {
         totalTime = totalTime_;
     }
 
+    @Override
+    public String toString() {
+        OptionalDouble artOpt = timers.stream().mapToLong(Long::longValue).average();
+        double art = artOpt.isPresent() ? artOpt.getAsDouble() : 0.;
+        return String.format("Concurrency level: %d%n" +
+                        "Total time: %dms%n" +
+                        "Requests count: %d%n" +
+                        "Fails count: %d%n" +
+                        "Received bytes: %d%n" +
+                        "RPS: %.1f%n" +
+                        "ART: %.1fms%n" +
+                        "50%%: %d%n" +
+                        "80%%: %d%n" +
+                        "90%%: %d%n" +
+                        "95%%: %d%n" +
+                        "99%%: %d%n" +
+                        "100%%: %d%n", settings.concurrency(), totalTime, settings.num(), fails.get(), totalBytesCount.get(),
+                0.001 * timers.stream().mapToLong(Long::longValue).sum() / settings.concurrency(), art,
+                getPercentileBy(50), getPercentileBy(80), getPercentileBy(90), getPercentileBy(95),
+                getPercentileBy(99), getPercentileBy(100));
+    }
+
     private long getPercentileBy(int percentile) {
         if (timers.isEmpty())
         {
@@ -47,27 +69,5 @@ public class Stats {
         timers.sort(Comparator.comparingLong(Long::longValue));
         int index = (int) Math.ceil((percentile / 100.) * timers.size());
         return timers.get(index - 1);
-    }
-
-    @Override
-    public String toString() {
-        OptionalDouble artOpt = timers.stream().mapToLong(Long::longValue).average();
-        double art = artOpt.isPresent() ? artOpt.getAsDouble() : 0.;
-        return String.format("Concurrency level: %d%n" +
-                "Total time: %dms%n" +
-                "Requests count: %d%n" +
-                "Fails count: %d%n" +
-                "Received bytes: %d%n" +
-                "RPS: %.1f%n" +
-                "ART: %.1fms%n" +
-                "50%%: %d%n" +
-                "80%%: %d%n" +
-                "90%%: %d%n" +
-                "95%%: %d%n" +
-                "99%%: %d%n" +
-                "100%%: %d%n", settings.concurrency(), totalTime, settings.num(), fails.get(), totalBytesCount.get(),
-                0.001 * timers.stream().mapToLong(Long::longValue).sum() / settings.concurrency(), art,
-                getPercentileBy(50), getPercentileBy(80), getPercentileBy(90), getPercentileBy(95),
-                getPercentileBy(99), getPercentileBy(100));
     }
 }
