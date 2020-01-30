@@ -1,10 +1,10 @@
 package org.benchmarktool;
 
-import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.*;
 
-public class BenchmarkConcurency {
+public class BenchmarkStats {
     private List<Long> timers = Collections.synchronizedList(new ArrayList<>());
     private AtomicInteger success = new AtomicInteger();
     private AtomicInteger fails = new AtomicInteger();
@@ -34,7 +34,7 @@ public class BenchmarkConcurency {
         return timers.stream().mapToLong(Long::longValue).sum();
     }
 
-    public void addBytes(long count) {
+    void addBytes(long count) {
         totalBytesCount.addAndGet(count);
     }
 

@@ -10,33 +10,27 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class HttpGetter {
-    private int statusCode;
-    private int bytesCount;
+    CloseableHttpClient httpClient;
+    private final String url;
 
-    HttpGetter(String url, int timeout) throws IOException {
+    HttpGetter(String url_, int timeout) {
+        url = url_;
+
         RequestConfig config = RequestConfig.custom()
                 .setConnectTimeout(timeout)
                 .setConnectionRequestTimeout(timeout)
                 .setSocketTimeout(timeout).build();
-        CloseableHttpClient httpClient = HttpClientBuilder.create()
+        httpClient = HttpClientBuilder.create()
                 .setDefaultRequestConfig(config)
                 .build();
+    }
 
-        System.out.println(url);
-        HttpGet getMethod = new HttpGet(url);
-        HttpResponse response = httpClient.execute(getMethod);
-
-        statusCode = response.getStatusLine().getStatusCode();
-        bytesCount = Arrays.stream(response.getAllHeaders())
+    ResponseInfo emit() throws IOException {
+        HttpResponse response = httpClient.execute(new HttpGet(url));
+        int statusCode = response.getStatusLine().getStatusCode();
+        int bytesCount = Arrays.stream(response.getAllHeaders())
                 .mapToInt(header -> header.getName().length() + header.getValue().length())
                 .sum();
-    }
-
-    int statusCode() {
-        return statusCode;
-    }
-
-    int bytesCount() {
-        return bytesCount;
+        return new ResponseInfo(statusCode, bytesCount);
     }
 }

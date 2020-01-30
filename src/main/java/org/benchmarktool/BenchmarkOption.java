@@ -1,15 +1,13 @@
 package org.benchmarktool;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 class BenchmarkOption {
-    private String url;
-    private int num;
-    private int concurrency;
-    private int timeout;
+    private final String url;
+    private final int num;
+    private final int concurrency;
+    private final int timeout;
 
-    @Contract(pure = true)
     BenchmarkOption(@NotNull String url_, Long num_, Long concurrency_, Long timeout_) throws Exception {
         if (url_.isEmpty())
         {

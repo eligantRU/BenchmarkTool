@@ -7,14 +7,14 @@ import org.apache.commons.cli.Option;
 
 class CommandLineParser {
     static BenchmarkOption parse(String[] args) throws Exception {
-        int DEFAULT_TIMEOUT = 30000;
+        final int defaultTimeout = 30000;
 
         CommandLine line = (new DefaultParser()).parse(createOptions(), args);
         return new BenchmarkOption(
                 (String) line.getParsedOptionValue("url"),
                 ((Long) line.getParsedOptionValue("num")),
                 ((Long) line.getParsedOptionValue("concurrency")),
-                line.hasOption("timeout") ? (Long) line.getParsedOptionValue("timeout") : DEFAULT_TIMEOUT);
+                line.hasOption("timeout") ? (Long) line.getParsedOptionValue("timeout") : defaultTimeout);
     }
 
     private static Options createOptions() {
