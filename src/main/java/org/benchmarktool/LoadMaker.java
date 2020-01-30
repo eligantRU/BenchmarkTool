@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.LongStream;
+import java.util.stream.IntStream;
 import java.io.IOException;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,15 +27,16 @@ class LoadMaker {
 
         Stopwatch totalWatch = Stopwatch.createStarted();
         AtomicInteger index = new AtomicInteger();
-        LongStream.range(0, option.num()).forEach(i -> pool.execute(() -> {
+        IntStream.range(0, option.num()).forEach(n -> pool.execute(() -> {
             Stopwatch watch = Stopwatch.createStarted();
             try {
                 HttpGetter getter = new HttpGetter(option.url(), option.timeout());
                 ResponseInfo info = getter.emit();
 
-                stats.addBytes(info.bytesCount());
                 watch.stop();
                 long elapsed = watch.elapsed(TimeUnit.MILLISECONDS);
+
+                stats.addBytes(info.bytesCount());
                 stats.addTimer(elapsed);
 
                 int major_code = info.status() / 100;
